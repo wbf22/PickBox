@@ -13,6 +13,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import pick.box.PickBox;
 import pick.box.PickerUtil;
 import pick.box.domain.doubleNestedExample.ClassDays;
@@ -141,12 +144,17 @@ class PickerBoxTest {
 
 
     @Test
-    void getDefaultObject() {
+    void getDefaultObject() throws JsonProcessingException {
         University university = PickBox.getDefaultObject(University.class);
 
+        System.out.println(
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(university)
+        );
+        
         assertNotNull(university);
     }
 
+    
     public static void main(String[] args) {
         PickerBoxTest pickerBoxTest = new PickerBoxTest();
         pickerBoxTest.mapDoubleNestedObject();
