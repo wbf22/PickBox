@@ -64,7 +64,7 @@ public class TypeUtil {
                 boolean isPrivate = !Modifier.isPublic(field.getModifiers());
                 if (isPrivate)
                     field.setAccessible(true);
-                Object value = (isBasicJavaType(field.getType()))? 
+                Object value = (isBasicType(field.getType()))? 
                     buildDefaultForJavaClass(field.getGenericType()) : 
                     buildDefaultForNonBasicClass(field.getType());
                 field.set(instance, value);
@@ -114,6 +114,9 @@ public class TypeUtil {
         else if (type == Boolean.class || type == boolean.class) {
             defaultObject = false;
         }
+        else if (type.isEnum()) {
+            defaultObject = type.getEnumConstants()[0];
+        }
         else if (Map.class.isAssignableFrom(type)) {
             Class<?> keyType = null;
             if (generic instanceof ParameterizedType) {
@@ -131,8 +134,8 @@ public class TypeUtil {
                 valueType = Object.class;
             }
 
-            Object key = (isBasicJavaType(keyType))? buildDefaultForJavaClass(keyType) : buildDefaultForNonBasicClass(keyType);
-            Object value = (isBasicJavaType(valueType))? buildDefaultForJavaClass(valueType) : buildDefaultForNonBasicClass(valueType);
+            Object key = (isBasicType(keyType))? buildDefaultForJavaClass(keyType) : buildDefaultForNonBasicClass(keyType);
+            Object value = (isBasicType(valueType))? buildDefaultForJavaClass(valueType) : buildDefaultForNonBasicClass(valueType);
 
             defaultObject = Map.of(key, value);
         }
@@ -144,7 +147,7 @@ public class TypeUtil {
             else {
                 listType = Object.class;
             }
-            Object instance = (isBasicJavaType(listType))? buildDefaultForJavaClass(listType) : buildDefaultForNonBasicClass(listType);
+            Object instance = (isBasicType(listType))? buildDefaultForJavaClass(listType) : buildDefaultForNonBasicClass(listType);
             defaultObject = List.of(instance);
         }
         else if (Date.class.isAssignableFrom(type)) {
@@ -162,6 +165,12 @@ public class TypeUtil {
         }
 
         return defaultObject;
+    }
+
+
+
+    public static boolean isBasicType(Class<?> type) {
+        return isBasicJavaType(type) || isSupportedCollectionType(type) || type.isEnum();
     }
 
     /**
@@ -185,6 +194,9 @@ public class TypeUtil {
                 || type == float.class || type == short.class || type == byte.class;
     }
 
+    public static boolean isSupportedCollectionType(Class<?> type) {
+        return Map.class.isAssignableFrom(type) || Collection.class.isAssignableFrom(type);
+    }
 
 
 }

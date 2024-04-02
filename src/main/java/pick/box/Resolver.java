@@ -37,17 +37,6 @@ public abstract class Resolver<T, P, E> {
     public abstract T resolve(P parent, E extraData);
 
 
-    @SuppressWarnings("unchecked")
-    public Class<T> getReturnType() {
-        ParameterizedType superclassType = (ParameterizedType) this.getClass().getGenericSuperclass();
-
-        Type returnType = superclassType.getActualTypeArguments()[0];
-        if (returnType instanceof ParameterizedType paramType) {
-            returnType = paramType.getRawType();
-        }
-
-        return (Class<T>) returnType;
-    }
 
 
     @SuppressWarnings("unchecked")

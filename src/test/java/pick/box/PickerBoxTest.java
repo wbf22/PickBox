@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import pick.box.PickerBox;
+import pick.box.PickBox;
 import pick.box.PickerUtil;
 import pick.box.domain.doubleNestedExample.ClassDays;
 import pick.box.domain.doubleNestedExample.Clazz;
@@ -34,11 +34,11 @@ import pick.box.domain.nestedExample.ParentResolver;
 
 
 
-public class PickerBoxTest {
+class PickerBoxTest {
     
 
     @Test
-    public void mapNestedObject() {
+    void mapNestedObject() {
         Parent request = new Parent();
         request.name = "";
 
@@ -53,7 +53,7 @@ public class PickerBoxTest {
         ParentResolver parentResolver = new ParentResolver();
         ChildResolver childResolver = new ChildResolver();
 
-        PickerBox pickerBox = new PickerBox(
+        PickBox pickerBox = new PickBox(
             List.of(parentResolver, childResolver)
         );
 
@@ -75,7 +75,7 @@ public class PickerBoxTest {
 
 
     @Test
-    public void mapDoubleNestedObject() {
+    void mapDoubleNestedObject() {
         
 
         University request = new University(
@@ -127,7 +127,7 @@ public class PickerBoxTest {
 
         
 
-        PickerBox pickerBox = new PickerBox(
+        PickBox pickerBox = new PickBox(
             List.of(new UniversityResolver(), new ClazzResolver(), new ClassDaysResolver(), new StudentResolver(), new ProfessorResolver())
         );
 
@@ -139,6 +139,13 @@ public class PickerBoxTest {
         );
     }
 
+
+    @Test
+    void getDefaultObject() {
+        University university = PickBox.getDefaultObject(University.class);
+
+        assertNotNull(university);
+    }
 
     public static void main(String[] args) {
         PickerBoxTest pickerBoxTest = new PickerBoxTest();

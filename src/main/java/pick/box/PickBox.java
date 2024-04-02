@@ -29,7 +29,7 @@ import pick.box.types.TypeUtil;
  * 
  * </pre>
  */
-public class PickerBox {
+public class PickBox {
     
     private Map<String, Resolver<?, ?, ?>> resolvers;
 
@@ -44,7 +44,7 @@ public class PickerBox {
      * </pre>
      * @param resolvers
      */
-    public PickerBox(List<Resolver<?,?,?>> resolvers) {
+    public PickBox(List<Resolver<?,?,?>> resolvers) {
         this.resolvers = new HashMap<>();
 
         for (Resolver<?,?,?> resolver : resolvers) {
@@ -62,19 +62,18 @@ public class PickerBox {
      * 
      * The type T must have a no args constructor for this to work. 
      * 
-     * The argList is a list of arguments needed for each 
+     * The extraData is an object needed for each 
      * resolver to fulfill their piece of the request. Say
      * to get a Person object you need an Id for the row in 
-     * the table. You would provide this in the args list, and 
-     * set the corresponding index in your Resolver. Then when
-     * PickerBox tries to fulfill the request it would look up
-     * the Id in the arg list by the index and provide that to 
-     * your resolver.
+     * your database. You would provide this as or in the object 'extraData'. 
+     * Then when PickerBox tries to fulfill the request, it will
+     * provide your resolvers with this object.
      * 
      * </pre>
      * @param <T>
-     * @param request
-     * @param argList
+     * @param <E>
+     * @param request the object with fields that need to be resolved
+     * @param extraData an object which will be given to resolvers to help fulfill the request (can be null)
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -275,5 +274,15 @@ public class PickerBox {
 
 
 
+    public static <T> T getDefaultObject(Class<T> type) {
+        Object result = (TypeUtil.isBasicJavaType(type))? 
+            TypeUtil.buildDefaultForJavaClass(type) : 
+            TypeUtil.buildDefaultForNonBasicClass(type);
+
+        if (type.isInstance(result)) {
+            return type.cast(result);
+        }
+        return null;
+    }
 
 }
