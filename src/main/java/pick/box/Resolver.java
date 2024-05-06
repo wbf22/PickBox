@@ -16,6 +16,10 @@ import java.util.Map;
  * to get the pieces when the requests asks for it. Implementing this class allows you
  * to provide the piece when PickPoint requests it. 
  * 
+ * T type is what the resolver outputs
+ * P is the parent object that will be provided to this resolver. (Use Object if it will not have a parent)
+ * E is the type of the extra data provided to the resolver when called. (Use Object if not needed)
+ * 
  * </pre>
  */
 public abstract class Resolver<T, P, E> {

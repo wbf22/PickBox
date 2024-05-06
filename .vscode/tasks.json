@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+
+      {
+        "label": "mvn clean install",
+        "type": "shell",
+        "command": "mvn clean install",
+        "problemMatcher": []
+      },
+      {
+        "label": "mvn package",
+        "type": "shell",
+        "command": "mvn package",
+        "problemMatcher": []
+      },
+      {
+        "label": "mvn deploy",
+        "type": "shell",
+        "command": "mvn deploy",
+        "problemMatcher": []
+      }
+    ]
+  }

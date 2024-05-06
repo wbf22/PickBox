@@ -6,7 +6,7 @@
 
   <groupId>pick.box</groupId>
   <artifactId>pick-box</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.8</version>
 
   <name>pick-box</name>
   <!-- FIXME change it to the project's website -->
@@ -49,6 +49,7 @@
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         
+        <!-- compiling -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -59,13 +60,15 @@
           </configuration>
         </plugin>
 
+        <!-- for building jar -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.3.0</version>
         </plugin>
 
-        <plugin>
+        <!-- for including dependencies in jar -->
+        <!-- <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.2.4</version>
@@ -78,6 +81,58 @@
               <configuration>
                 <createDependencyReducedPom>false</createDependencyReducedPom>
               </configuration>
+            </execution>
+          </executions>
+        </plugin> -->
+
+        <!-- add source files to jar -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>jar</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <encoding>UTF-8</encoding>
+                <resources>
+                    <resource>
+                        <directory>src/main/java</directory>
+                        <filtering>false</filtering>
+                    </resource>
+                </resources>
+            </configuration>
+        </plugin>
+
+        <!-- add javadocs to jar -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.3.0</version>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
             </execution>
           </executions>
         </plugin>

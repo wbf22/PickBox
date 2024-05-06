@@ -150,7 +150,7 @@ public class TypeUtil {
             Object instance = (isBasicType(listType))? buildDefaultForJavaClass(listType) : buildDefaultForNonBasicClass(listType);
             defaultObject = List.of(instance);
         }
-        else if (Date.class.isAssignableFrom(type)) {
+        else if (Temporal.class.isAssignableFrom(type)) {
             try {
                 defaultObject = type.getMethod("now").invoke(null);
             } catch (ReflectiveOperationException e) {

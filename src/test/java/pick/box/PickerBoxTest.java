@@ -33,6 +33,7 @@ import pick.box.domain.nestedExample.ChildResolver;
 import pick.box.domain.nestedExample.Gender;
 import pick.box.domain.nestedExample.Parent;
 import pick.box.domain.nestedExample.ParentResolver;
+import pick.box.domain.nestedExample.RandomStuff;
 
 
 
@@ -154,6 +155,19 @@ class PickerBoxTest {
         assertNotNull(university);
     }
 
+
+    @Test
+    void getDefaultObjectWithZonedDate() throws JsonProcessingException {
+
+        
+        RandomStuff randomStuff = PickBox.getDefaultObject(RandomStuff.class);
+
+        System.out.println(
+            randomStuff.date
+        );
+        
+        assertNotNull(randomStuff);
+    }
     
     public static void main(String[] args) {
         PickerBoxTest pickerBoxTest = new PickerBoxTest();
