@@ -182,7 +182,11 @@ public class TypeUtil {
      * @return
      */
     public static boolean isBasicJavaType(Class<?> type) {
-        return isNumericClass(type) || Temporal.class.isAssignableFrom(type) || type == String.class;
+        return isNumericClass(type) || Temporal.class.isAssignableFrom(type) || type == String.class || isBoolean(type);
+    }
+
+    public static boolean isBoolean(Class<?> type) {
+        return type == Boolean.class || type == boolean.class;
     }
 
     public static boolean isNumericClass(Class<?> type) {

@@ -72,9 +72,9 @@ class PickerBoxTest {
 
 
         Map<String, Object> resMap = PickerUtil.mapify(result);
-        System.out.println(
-            PickerUtil.jsonMap(resMap)
-        );
+        // System.out.println(
+        //     PickerUtil.jsonMap(resMap)
+        // );
     }
 
 
@@ -138,9 +138,9 @@ class PickerBoxTest {
         University result = pickerBox.resolveRequest(request, "univ_1");
 
         Map<String, Object> resMap = PickerUtil.mapify(result);
-        System.out.println(
-            PickerUtil.jsonMap(resMap)
-        );
+        // System.out.println(
+        //     PickerUtil.jsonMap(resMap)
+        // );
     }
 
 
@@ -148,9 +148,9 @@ class PickerBoxTest {
     void getDefaultObject() throws JsonProcessingException {
         University university = PickBox.getDefaultObject(University.class);
 
-        System.out.println(
-            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(university)
-        );
+        // System.out.println(
+        //     new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(university)
+        // );
         
         assertNotNull(university);
     }
@@ -162,9 +162,9 @@ class PickerBoxTest {
         
         RandomStuff randomStuff = PickBox.getDefaultObject(RandomStuff.class);
 
-        System.out.println(
-            randomStuff.date
-        );
+        // System.out.println(
+        //     randomStuff.date
+        // );
         
         assertNotNull(randomStuff);
     }

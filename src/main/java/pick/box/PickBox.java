@@ -157,7 +157,10 @@ public class PickBox {
             Object value = null;
 
             // check if response already provided the field
-            if (field.get(response) != null) {
+            if (response == null) {
+                return value;
+            } 
+            else if (field.get(response) != null) {
                 value = field.get(response);
             }
             // check if the field is a list
