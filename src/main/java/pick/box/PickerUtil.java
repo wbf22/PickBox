@@ -2,13 +2,11 @@ package pick.box;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pick.box.exception.PickerException;
 import pick.box.types.TypeUtil;
@@ -100,11 +98,70 @@ public class PickerUtil {
      * Converts a map to a pretty json string
      */
     public static String jsonMap(Map<String, Object> map) {
-        try {
-            return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(map);
-        } catch (JsonProcessingException e) {
-            throw new PickerException("Failed parseing of map in jackson parser", e);
+        StringBuilder builder = new StringBuilder();
+        builder.append("{\n");
+
+        for (Entry<String, Object> entry : map.entrySet()) {
+
+            if (entry.getValue() instanceof Map) {
+                builder.append("\t\"").append(entry.getKey()).append("\": ");
+                String mapString = jsonMap((Map<String, Object>) entry.getValue());
+                String[] lines = mapString.split("\n");
+
+                builder.append("\t").append(lines[0]).append("\n");
+                String[] otherLines = Arrays.copyOfRange(lines, 1, lines.length);
+                for (String line : otherLines) {
+                    builder.append("\t").append(line).append("\n");
+                }
+
+            } 
+            else if (entry.getValue() instanceof List) {
+                builder.append("\t\"").append(entry.getKey()).append("\": ");
+                List<?> list = (List<?>) entry.getValue();
+                builder.append("[\n");
+                for (Object o : list) {
+                    if (o instanceof Map) {
+                        String mapString = jsonMap((Map<String, Object>) o);
+                        String[] lines = mapString.split("\n");
+
+                        builder.append("\t\t").append(lines[0]).append("\n");
+                        String[] otherLines = Arrays.copyOfRange(lines, 1, lines.length);
+                        for (String line : otherLines) {
+                            builder.append("\t\t").append(line).append("\n");
+                        }
+                        builder.deleteCharAt(builder.length() - 1);
+                        builder.append(",\n");
+                    } 
+                    else if (o instanceof List) {
+                        throw new PickerException("Double nested lists aren't supported for jsonMap conversion. Map key: " + entry.getKey(), null);
+                    }
+                    else if (o instanceof String || o.getClass().isEnum()) {
+                        builder.append("\"").append(o).append("\"").append(",\n");
+                    }
+                    else {
+                        builder.append(entry.getValue()).append(",\n");
+                    }
+                }
+                builder.deleteCharAt(builder.length() - 2);
+                builder.append("\t],\n");	
+            }
+            else {
+                builder.append("\t\"").append(entry.getKey()).append("\": ");
+                if (entry.getValue() instanceof String || entry.getValue().getClass().isEnum()) {
+                    builder.append("\"").append(entry.getValue()).append("\"").append(",\n");
+                }
+                else {
+                    builder.append(entry.getValue()).append(",\n");
+                }
+            }
+
         }
+
+        builder.deleteCharAt(builder.length() - 2);
+        builder.append("}");
+
+        return builder.toString();
     }
+	
 
 }
